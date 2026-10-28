@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Los hooks se ejecutan desde la raíz del repo (git lo hace así), por eso el cd.
+cd frontend/vite-miniproject && npx lint-staged

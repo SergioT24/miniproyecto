@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AppLayout } from "./components/AppLayout";
-import { HomePage } from "./pages/HomePage";
-import { EmptyPage } from "./pages/EmptyPage";
-import { routes } from "./lib/nav";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { AppLayout } from "./components/AppLayout"
+import { HomePage } from "./pages/HomePage"
+import { EmptyPage } from "./pages/EmptyPage"
+import { routes } from "./lib/nav"
 
 export default function App() {
   return (
@@ -17,5 +17,5 @@ export default function App() {
         </Routes>
       </AppLayout>
     </BrowserRouter>
-  );
+  )
 }

@@ -1,0 +1,7 @@
+# Todos los archivos en texto con fin de línea LF (consistente con .prettierrc endOfLine: lf)
+* text=auto eol=lf
+
+# Binales
+*.png binary
+*.jpg binary
+*.ico binary
