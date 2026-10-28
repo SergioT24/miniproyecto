@@ -18,7 +18,7 @@ Sigue estos simples pasos en la terminal integrada de **Visual Studio Code** (`C
 
 ### 📋 Requisitos previos
 
-- [Node.js](https://nodejs.org/) **22 o superior** (mínimo 20.19)
+- [Node.js](https://nodejs.org/) **22.13 o superior** (versión LTS)
 - npm (se instala junto con Node.js)
 
 ---
