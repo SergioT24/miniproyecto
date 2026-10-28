@@ -1,5 +1,6 @@
-import React from "react"
-import { type LucideIcon, Home, Inbox, Calendar, Settings } from "lucide-react"
+import type { ReactElement } from "react"
+import { Link, useLocation } from "react-router-dom"
+import { sidebarNav } from "@/lib/nav"
 import {
     Sidebar,
     SidebarContent,
@@ -12,20 +13,9 @@ import {
     SidebarMenuButton,
 } from "@workspace/ui/components/sidebar"
 
-interface NavItem {
-    title: string
-    url: string
-    icon: LucideIcon
-}
+export function AppSidebar(): ReactElement {
+    const { pathname } = useLocation()
 
-const platformItems: NavItem[] = [
-    { title: "Inicio", url: "#", icon: Home },
-    { title: "Bandeja de entrada", url: "#", icon: Inbox },
-    { title: "Calendario", url: "#", icon: Calendar },
-    { title: "Configuración", url: "#", icon: Settings },
-]
-
-export function AppSidebar(): React.ReactElement {
     return (
         <Sidebar collapsible="icon" className="border-r-0">
             <SidebarHeader className="flex flex-row items-center gap-2 p-3">
@@ -42,14 +32,15 @@ export function AppSidebar(): React.ReactElement {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {platformItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
+                            {sidebarNav.map((item) => (
+                                <SidebarMenuItem key={item.to}>
                                     <SidebarMenuButton
-                                        tooltip={item.title}
-                                        render={<a href={item.url} />}
+                                        tooltip={item.label}
+                                        isActive={pathname === item.to}
+                                        render={<Link to={item.to} />}
                                     >
                                         <item.icon />
-                                        <span>{item.title}</span>
+                                        <span>{item.label}</span>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}

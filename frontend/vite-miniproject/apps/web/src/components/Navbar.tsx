@@ -1,32 +1,22 @@
 import { ChevronDown, Search } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
 import { Input } from "@workspace/ui/components/input"
 import { SidebarTrigger } from "@workspace/ui/components/sidebar"
-import { Link, useNavigate } from "react-router-dom"
 import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
 } from "@workspace/ui/components/dropdown-menu"
+import { componentGalleryNav, mainNav } from "@/lib/nav"
 
-const links = [
-    { label: "Home", href: "/", active: true },
-]
+function NavLink({ label, to }: { label: string; to: string }) {
+    const { pathname } = useLocation()
+    const active = pathname === to
 
-const dropdownItems = [
-    { label: "Grilla Filtro", href: "/" },
-    { label: "Grilla agregar", href: "/" },
-    { label: "Cards metricas", href: "/" },
-    { label: "Toasts", href: "/" },
-    { label: "Empty states", href: "/emptypage" },
-    { label: "Form", href: "/" },
-    { label: "Modal confirmacion", href: "/" },
-]
-
-function NavLink({ label, href, active }: { label: string; href: string; active?: boolean }) {
     return (
         <Link
-            to={href}
+            to={to}
             className={
                 active
                     ? "font-medium text-primary"
@@ -39,8 +29,6 @@ function NavLink({ label, href, active }: { label: string; href: string; active?
 }
 
 export function Navbar() {
-    const navigate = useNavigate()
-
     return (
         <nav className="w-full sticky top-0 z-20 border-b bg-card">
             <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
@@ -63,17 +51,20 @@ export function Navbar() {
                 </div>
 
                 <div className="hidden items-center gap-8 md:flex">
-                    <NavLink {...links[0]} />
+                    {mainNav.map((link) => (
+                        <NavLink key={link.to} {...link} />
+                    ))}
+
                     <DropdownMenu>
                         <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:text-primary">
                             Componentes
                             <ChevronDown className="size-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            {dropdownItems.map((item) => (
+                            {componentGalleryNav.map((item) => (
                                 <DropdownMenuItem
                                     key={item.label}
-                                    onClick={() => navigate(item.href)}
+                                    render={<Link to={item.to} />}
                                     className="cursor-pointer"
                                 >
                                     {item.label}
@@ -81,10 +72,6 @@ export function Navbar() {
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
-
-                    {links.slice(1).map((link) => (
-                        <NavLink key={link.label} {...link} />
-                    ))}
                 </div>
 
             </div>
