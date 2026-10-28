@@ -5,5 +5,3 @@ export function EmptyPage() {
     </div>
   )
 }
-
-export default EmptyPage

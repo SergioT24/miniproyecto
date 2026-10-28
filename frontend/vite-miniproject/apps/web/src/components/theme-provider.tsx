@@ -1,6 +1,7 @@
 import * as React from "react"
 
-type Theme = "dark" | "light"
+export type Theme = "dark" | "light" | "system"
+type ResolvedTheme = Exclude<Theme, "system">
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -11,10 +12,11 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   theme: Theme
+  resolvedTheme: ResolvedTheme
   setTheme: (theme: Theme) => void
 }
 
-const THEME_VALUES: Theme[] = ["dark", "light"]
+const THEME_VALUES: Theme[] = ["dark", "light", "system"]
 
 const ThemeProviderContext = React.createContext<
   ThemeProviderState | undefined
@@ -26,6 +28,12 @@ function isTheme(value: string | null): value is Theme {
   }
 
   return THEME_VALUES.includes(value as Theme)
+}
+
+function getSystemTheme(): ResolvedTheme {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light"
 }
 
 function disableTransitionsTemporarily() {
@@ -68,7 +76,7 @@ function isEditableTarget(target: EventTarget | null) {
 
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
+  defaultTheme = "system",
   storageKey = "theme",
   disableTransitionOnChange = true,
   ...props
@@ -82,6 +90,17 @@ export function ThemeProvider({
     return defaultTheme
   })
 
+  const [systemTheme, setSystemTheme] = React.useState<ResolvedTheme>(() =>
+    getSystemTheme()
+  )
+
+  React.useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)")
+    const onChange = () => setSystemTheme(getSystemTheme())
+    mql.addEventListener("change", onChange)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+
   const setTheme = React.useCallback(
     (nextTheme: Theme) => {
       localStorage.setItem(storageKey, nextTheme)
@@ -91,7 +110,7 @@ export function ThemeProvider({
   )
 
   const applyTheme = React.useCallback(
-    (nextTheme: Theme) => {
+    (nextTheme: ResolvedTheme) => {
       const root = document.documentElement
       const restoreTransitions = disableTransitionOnChange
         ? disableTransitionsTemporarily()
@@ -107,9 +126,11 @@ export function ThemeProvider({
     [disableTransitionOnChange]
   )
 
+  const resolvedTheme = theme === "system" ? systemTheme : theme
+
   React.useEffect(() => {
-    applyTheme(theme)
-  }, [theme, applyTheme])
+    applyTheme(resolvedTheme)
+  }, [resolvedTheme, applyTheme])
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -130,7 +151,12 @@ export function ThemeProvider({
       }
 
       setThemeState((currentTheme) => {
-        const nextTheme = currentTheme === "dark" ? "light" : "dark"
+        const nextTheme =
+          currentTheme === "light"
+            ? "dark"
+            : currentTheme === "dark"
+              ? "system"
+              : "light"
 
         localStorage.setItem(storageKey, nextTheme)
         return nextTheme
@@ -172,9 +198,10 @@ export function ThemeProvider({
   const value = React.useMemo(
     () => ({
       theme,
+      resolvedTheme,
       setTheme,
     }),
-    [theme, setTheme]
+    [theme, resolvedTheme, setTheme]
   )
 
   return (

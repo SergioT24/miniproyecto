@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
 } from "@workspace/ui/components/dropdown-menu"
 import { componentGalleryNav, mainNav } from "@/lib/nav"
+import { ThemeToggle } from "./ThemeToggle"
 
 function NavLink({ label, to }: { label: string; to: string }) {
   const { pathname } = useLocation()
@@ -34,6 +35,7 @@ export function Navbar() {
       <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="md:hidden" />
+          <ThemeToggle />
           <Link to="/" className="flex items-center gap-3">
             <span className="text-xl font-semibold">Tablero</span>
           </Link>
@@ -45,6 +47,7 @@ export function Navbar() {
           <Input
             type="search"
             placeholder="Buscar..."
+            aria-label="Buscar"
             className="w-full pl-8"
           />
         </div>
