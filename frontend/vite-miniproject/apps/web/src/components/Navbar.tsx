@@ -1,6 +1,7 @@
 import { ChevronDown, Search } from "lucide-react"
 import { Input } from "@workspace/ui/components/input"
 import { SidebarTrigger } from "@workspace/ui/components/sidebar"
+import { Link, useNavigate } from "react-router-dom"
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -9,15 +10,23 @@ import {
 } from "@workspace/ui/components/dropdown-menu"
 
 const links = [
-    { label: "Home", href: "#", active: true },
+    { label: "Home", href: "/", active: true },
 ]
 
-const dropdownItems = ["Grilla Filtro", "Grilla agregar", "Cards metricas", "Toasts", "Empty states", "Form", "Modal confirmacion"]
+const dropdownItems = [
+    { label: "Grilla Filtro", href: "/" },
+    { label: "Grilla agregar", href: "/" },
+    { label: "Cards metricas", href: "/" },
+    { label: "Toasts", href: "/" },
+    { label: "Empty states", href: "/emptypage" },
+    { label: "Form", href: "/" },
+    { label: "Modal confirmacion", href: "/" },
+]
 
 function NavLink({ label, href, active }: { label: string; href: string; active?: boolean }) {
     return (
-        <a
-            href={href}
+        <Link
+            to={href}
             className={
                 active
                     ? "font-medium text-primary"
@@ -25,20 +34,22 @@ function NavLink({ label, href, active }: { label: string; href: string; active?
             }
         >
             {label}
-        </a>
+        </Link>
     )
 }
 
 export function Navbar() {
+    const navigate = useNavigate()
+
     return (
         <nav className="w-full sticky top-0 z-20 border-b bg-card">
             <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
 
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
-                    <a href="#" className="flex items-center gap-3">
+                    <Link to="/" className="flex items-center gap-3">
                         <span className="text-xl font-semibold">Tablero</span>
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Buscador */}
@@ -60,7 +71,13 @@ export function Navbar() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {dropdownItems.map((item) => (
-                                <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
+                                <DropdownMenuItem
+                                    key={item.label}
+                                    onClick={() => navigate(item.href)}
+                                    className="cursor-pointer"
+                                >
+                                    {item.label}
+                                </DropdownMenuItem>
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
