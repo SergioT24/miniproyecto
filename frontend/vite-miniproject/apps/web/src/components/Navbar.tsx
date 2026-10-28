@@ -1,6 +1,6 @@
 import { ChevronDown, Search } from "lucide-react"
 import { Input } from "@workspace/ui/components/input"
-import { SidebarTrigger } from "@workspace/ui/components/sidebar" // <-- Agregar import
+import { SidebarTrigger } from "@workspace/ui/components/sidebar"
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -10,12 +10,9 @@ import {
 
 const links = [
     { label: "Home", href: "#", active: true },
-    { label: "Services", href: "#" },
-    { label: "Pricing", href: "#" },
-    { label: "Contact", href: "#" },
 ]
 
-const dropdownItems = ["Sergio", "Cami", "Matu", "Agus", "Lu"]
+const dropdownItems = ["Grilla Filtro", "Grilla agregar", "Cards metricas", "Toasts", "Empty states", "Form", "Modal confirmacion"]
 
 function NavLink({ label, href, active }: { label: string; href: string; active?: boolean }) {
     return (
@@ -37,7 +34,6 @@ export function Navbar() {
         <nav className="w-full sticky top-0 z-20 border-b bg-card">
             <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
 
-                {/* Lado izquierdo: Trigger en mobile + Título */}
                 <div className="flex items-center gap-2">
                     <SidebarTrigger className="md:hidden" />
                     <a href="#" className="flex items-center gap-3">
@@ -55,12 +51,11 @@ export function Navbar() {
                     />
                 </div>
 
-                {/* Links Desktop */}
                 <div className="hidden items-center gap-8 md:flex">
                     <NavLink {...links[0]} />
                     <DropdownMenu>
                         <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:text-primary">
-                            Integrantes
+                            Componentes
                             <ChevronDown className="size-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>

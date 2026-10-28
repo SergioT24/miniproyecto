@@ -29,7 +29,6 @@ export function AppSidebar(): React.ReactElement {
     return (
         <Sidebar collapsible="icon" className="border-r-0">
             <SidebarHeader className="flex flex-row items-center gap-2 p-3">
-                {/* Logo o Avatar */}
                 <div className="flex h-8 w-8 items-center justify-center shrink-0">
                     <img src="/logo.png" alt="Logo" className="h-full w-full object-contain" />
                 </div>
