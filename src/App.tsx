@@ -3,6 +3,7 @@ import { AppLayout } from "./layouts/AppLayout"
 import { HomePage } from "./pages/HomePage"
 import { EmptyPage } from "./pages/EmptyPage"
 import { routes } from "./lib/nav"
+import { ToastPage } from "./pages/ToastPage"
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
                 <Route path={routes.calendario} element={<EmptyPage />} />
                 <Route path={routes.configuracion} element={<EmptyPage />} />
                 <Route path={routes.emptyPage} element={<EmptyPage />} />
+                <Route path={routes.toasts} element={<ToastPage />} />
                 <Route path="*" element={<EmptyPage />} />
             </Routes>
         </AppLayout>
