@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { AppLayout } from "./layouts/AppLayout"
 import { HomePage } from "./pages/HomePage"
+import { DataTablePage } from "./pages/DataTablePage"
 import { EmptyPage } from "./pages/EmptyPage"
 import { routes } from "./lib/nav"
 
@@ -12,7 +13,7 @@ export default function App() {
                 <Route path={routes.bandeja} element={<EmptyPage />} />
                 <Route path={routes.calendario} element={<EmptyPage />} />
                 <Route path={routes.configuracion} element={<EmptyPage />} />
-                <Route path={routes.emptyPage} element={<EmptyPage />} />
+                <Route path={routes.form} element={<DataTablePage />} />
                 <Route path="*" element={<EmptyPage />} />
             </Routes>
         </AppLayout>

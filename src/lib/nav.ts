@@ -10,6 +10,7 @@ export const routes = {
     bandeja: "/bandeja",
     calendario: "/calendario",
     configuracion: "/configuracion",
+    form: "/form",
     emptyPage: "/emptypage",
 } as const
 
@@ -40,6 +41,6 @@ export const componentGalleryNav: NavItem[] = [
     { label: "Cards metricas", to: routes.home },
     { label: "Toasts", to: routes.home },
     { label: "Empty states", to: routes.emptyPage },
-    { label: "Form", to: routes.home },
+    { label: "form", to: routes.form },
     { label: "Modal confirmacion", to: routes.home },
 ]
