@@ -6,6 +6,8 @@ import { EmptyPage } from "./pages/EmptyPage"
 import { routes } from "./lib/nav"
 import { ModalPage } from "./pages/ModalPage"
 import { ToastPage } from "./pages/ToastPage"
+import { FormPage } from "./pages/FormPage"
+import { GridPage } from "./pages/GridPage"
 
 export default function App() {
     return (
@@ -19,6 +21,8 @@ export default function App() {
                 <Route path={routes.emptyPage} element={<EmptyPage />} />
                 <Route path={routes.modalConfirmacion} element={<ModalPage />} />
                 <Route path={routes.toasts} element={<ToastPage />} />
+                <Route path={routes.formulario} element={<FormPage />} />
+                <Route path={routes.grillaAgregar} element={<GridPage />} />
                 <Route path="*" element={<EmptyPage />} />
             </Routes>
         </AppLayout>

@@ -14,6 +14,8 @@ export const routes = {
     emptyPage: "/emptypage",
     modalConfirmacion: "/modal-confirmacion",
     toasts: "/toasts",
+    formulario: "/formulario",
+    grillaAgregar: "/grilla-agregar",
 } as const
 
 export interface NavItem {
@@ -39,10 +41,10 @@ export const mainNav: NavItem[] = [{ label: "Home", to: routes.home }]
 /** Galería de demos del kit de UI — no es parte de la IA del producto. */
 export const componentGalleryNav: NavItem[] = [
     { label: "Grilla Filtro", to: routes.home },
-    { label: "Grilla agregar", to: routes.home },
-    { label: "Cards metricas", to: routes.home },
+    { label: "Grilla agregar", to: routes.grillaAgregar },
+    
     { label: "Toasts", to: routes.toasts },
-    { label: "Empty states", to: routes.emptyPage },
+  
     { label: "form", to: routes.form },
     { label: "Modal confirmacion", to: routes.modalConfirmacion },
 ]
