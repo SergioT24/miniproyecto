@@ -10,7 +10,12 @@ export const routes = {
     bandeja: "/bandeja",
     calendario: "/calendario",
     configuracion: "/configuracion",
+    form: "/form",
     emptyPage: "/emptypage",
+    modalConfirmacion: "/modal-confirmacion",
+    toasts: "/toasts",
+    metricas: "/cards-metricas",
+    emptyStates: "/empty-states",
 } as const
 
 export interface NavItem {
@@ -37,9 +42,9 @@ export const mainNav: NavItem[] = [{ label: "Home", to: routes.home }]
 export const componentGalleryNav: NavItem[] = [
     { label: "Grilla Filtro", to: routes.home },
     { label: "Grilla agregar", to: routes.home },
-    { label: "Cards metricas", to: routes.home },
-    { label: "Toasts", to: routes.home },
-    { label: "Empty states", to: routes.emptyPage },
-    { label: "Form", to: routes.home },
-    { label: "Modal confirmacion", to: routes.home },
+    { label: "Cards metricas", to: routes.metricas },
+    { label: "Toasts", to: routes.toasts },
+    { label: "Empty states", to: routes.emptyStates },
+    { label: "form", to: routes.form },
+    { label: "Modal confirmacion", to: routes.modalConfirmacion },
 ]

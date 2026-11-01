@@ -1,8 +1,13 @@
 import { Routes, Route } from "react-router-dom"
 import { AppLayout } from "./layouts/AppLayout"
 import { HomePage } from "./pages/HomePage"
+import { DataTablePage } from "./pages/DataTablePage"
 import { EmptyPage } from "./pages/EmptyPage"
 import { routes } from "./lib/nav"
+import { ModalPage } from "./pages/ModalPage"
+import { ToastPage } from "./pages/ToastPage"
+import { MetricCardPage } from "./pages/MetricCardPage"
+import { EmptyStatePage } from "./pages/EmptyStatePage"
 
 export default function App() {
     return (
@@ -12,7 +17,12 @@ export default function App() {
                 <Route path={routes.bandeja} element={<EmptyPage />} />
                 <Route path={routes.calendario} element={<EmptyPage />} />
                 <Route path={routes.configuracion} element={<EmptyPage />} />
+                <Route path={routes.form} element={<DataTablePage />} />
                 <Route path={routes.emptyPage} element={<EmptyPage />} />
+                <Route path={routes.modalConfirmacion} element={<ModalPage />} />
+                <Route path={routes.toasts} element={<ToastPage />} />
+                <Route path={routes.metricas} element={<MetricCardPage />} />
+                <Route path={routes.emptyStates} element={<EmptyStatePage />} />
                 <Route path="*" element={<EmptyPage />} />
             </Routes>
         </AppLayout>

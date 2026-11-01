@@ -3,7 +3,7 @@ import { type LucideIcon, Inbox } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export interface EmptyStateProps {
-    
+  
     icon?: LucideIcon
     title: string
     description?: string
@@ -11,7 +11,7 @@ export interface EmptyStateProps {
     className?: string
 }
 
-/*estado vacio se muestra cuando una sección tabla o lista no tiene datos*/
+
 export function EmptyState({
     icon: Icon = Inbox,
     title,
