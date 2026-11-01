@@ -17,7 +17,9 @@ export function ModalPage() {
                 <Button variant="destructive" onClick={() => setOpen(true)}>
                     Eliminar movimiento
                 </Button>
-                <p className="text-sm text-muted-foreground">{resultado}</p>
+                <p role="status" className="text-sm text-muted-foreground">
+                    {resultado}
+                </p>
             </div>
 
             <ConfirmDialog
