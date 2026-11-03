@@ -20,7 +20,6 @@ export function MetricCardPage() {
                     label="Ingresos del mes"
                     value={formatoPesos.format(1250000)}
                     icon={Wallet}
-                    unit="ARS"
                     change="+12,5%"
                     trend="up"
                     description="vs. mes anterior"
@@ -29,7 +28,6 @@ export function MetricCardPage() {
                     label="Egresos del mes"
                     value={formatoPesos.format(830000)}
                     icon={CreditCard}
-                    unit="ARS"
                     change="+4,2%"
                     trend="down"
                     description="vs. mes anterior"
@@ -38,7 +36,6 @@ export function MetricCardPage() {
                     label="Saldo disponible"
                     value={formatoPesos.format(420000)}
                     icon={PiggyBank}
-                    unit="ARS"
                     change="0%"
                     description="sin cambios"
                 />

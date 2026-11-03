@@ -7,7 +7,6 @@ export interface MetricCardProps {
    
     label: string
     value: string
-    unit?: string
     icon?: LucideIcon
     change?: string
     trend?: MetricTrend
@@ -24,7 +23,6 @@ const trendStyles: Record<MetricTrend, { icon: LucideIcon; className: string }> 
 export function MetricCard({
     label,
     value,
-    unit,
     icon: Icon,
     change,
     trend = "neutral",
@@ -42,17 +40,10 @@ export function MetricCard({
         >
             <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-medium text-muted-foreground">{label}</p>
-                {Icon && (
-                    <span className="flex size-8 items-center justify-center rounded-lg bg-accent text-primary">
-                        <Icon className="size-4" aria-hidden="true" />
-                    </span>
-                )}
+                {Icon && <Icon className="size-4 text-muted-foreground" aria-hidden="true" />}
             </div>
 
-            <p className="mt-2 text-2xl font-bold">
-                {value}
-                {unit && <span className="ml-1.5 text-sm font-medium text-muted-foreground">{unit}</span>}
-            </p>
+            <p className="mt-2 text-2xl font-bold">{value}</p>
 
             {(change || description) && (
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm">
