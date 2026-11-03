@@ -18,6 +18,7 @@ function NavLink({ label, to }: { label: string; to: string }) {
     return (
         <Link
             to={to}
+            aria-current={active ? "page" : undefined}
             className={
                 active
                     ? "font-medium text-primary"
@@ -31,7 +32,7 @@ function NavLink({ label, to }: { label: string; to: string }) {
 
 export function Navbar() {
     return (
-        <nav className="sticky top-0 z-20 w-full border-b bg-card">
+        <nav aria-label="Navegación superior" className="sticky top-0 z-20 w-full border-b bg-card">
             <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
                 <div className="flex items-center gap-2">
                     <SidebarTrigger />
@@ -42,7 +43,11 @@ export function Navbar() {
                 </div>
 
                 {/* Buscador */}
-                <div className="relative max-w-xs flex-1">
+                <div
+                    role="search"
+                    aria-label="Búsqueda"
+                    className="relative max-w-xs flex-1"
+                >
                     <Search className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         type="search"

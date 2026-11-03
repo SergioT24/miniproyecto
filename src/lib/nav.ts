@@ -16,6 +16,8 @@ export const routes = {
     toasts: "/toasts",
     metricas: "/cards-metricas",
     emptyStates: "/empty-states",
+    formulario: "/formulario",
+    grillaAgregar: "/grilla-agregar",
 } as const
 
 export interface NavItem {
@@ -36,7 +38,7 @@ export const sidebarNav: SidebarNavItem[] = [
 ]
 
 /** Links horizontales del navbar. */
-export const mainNav: NavItem[] = [{ label: "Home", to: routes.home }]
+export const mainNav: NavItem[] = [{ label: "Inicio", to: routes.home }]
 
 /** Galería de demos del kit de UI — no es parte de la IA del producto. */
 export const componentGalleryNav: NavItem[] = [
@@ -45,6 +47,10 @@ export const componentGalleryNav: NavItem[] = [
     { label: "Cards metricas", to: routes.metricas },
     { label: "Toasts", to: routes.toasts },
     { label: "Empty states", to: routes.emptyStates },
+    { label: "Grilla agregar", to: routes.grillaAgregar },
+    
+    { label: "Toasts", to: routes.toasts },
+  
     { label: "form", to: routes.form },
     { label: "Modal confirmacion", to: routes.modalConfirmacion },
 ]

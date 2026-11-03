@@ -6,7 +6,7 @@ export function ToastPage() {
         <div>
             <h1 className="text-2xl font-bold">Avisos (toast)</h1>
             <p className="mt-2 text-muted-foreground">
-                Notificacion visual breve y emergente que aparece de forma automatica.
+                Notificación visual breve y emergente que aparece de forma automática.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
