@@ -34,7 +34,7 @@ export const sidebarNav: SidebarNavItem[] = [
 ]
 
 /** Links horizontales del navbar. */
-export const mainNav: NavItem[] = [{ label: "Home", to: routes.home }]
+export const mainNav: NavItem[] = [{ label: "Inicio", to: routes.home }]
 
 /** Galería de demos del kit de UI — no es parte de la IA del producto. */
 export const componentGalleryNav: NavItem[] = [

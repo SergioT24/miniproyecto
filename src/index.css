@@ -46,12 +46,13 @@
   --warning: #b45309;
   --warning-foreground: #ffffff;
 
-  /* Charts: una serie en violeta, el resto en grises */
+  /* Charts: paleta segura para daltonismo; el violeta se mantiene como serie principal.
+     Complementar siempre con patrón/etiqueta: el color no debe ser la única señal (WCAG 1.4.1). */
   --chart-1: #6d28d9;
-  --chart-2: #a1a1aa;
-  --chart-3: #d4d4d8;
-  --chart-4: #a78bfa;
-  --chart-5: #52525b;
+  --chart-2: #ea580c;
+  --chart-3: #0d9488;
+  --chart-4: #a16207;
+  --chart-5: #64748b;
 
   /* Sidebar: violeta muy suave (violet-50), por debajo de las cards blancas */
   --sidebar: #f5f3ff;
@@ -78,8 +79,9 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
 
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  /* Violeta de marca también en tema oscuro (texto oscuro encima: ~6.5:1) */
+  --primary: #a78bfa;
+  --primary-foreground: #18181b;
 
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -90,7 +92,7 @@
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: #a78bfa;
 
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: #18181b;
@@ -99,21 +101,22 @@
   --warning: #fbbf24;
   --warning-foreground: #18181b;
 
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Charts: misma paleta segura, aclarada para fondo oscuro */
+  --chart-1: #a78bfa;
+  --chart-2: #fb923c;
+  --chart-3: #2dd4bf;
+  --chart-4: #facc15;
+  --chart-5: #a1a1aa;
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-muted-foreground: #a1a1aa;
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #18181b;
+  --sidebar-accent: #2e2547;
+  --sidebar-accent-foreground: #ddd6fe;
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: #a78bfa;
 }
 
 @theme inline {
@@ -185,5 +188,18 @@
 
   html {
     @apply font-sans;
+  }
+}
+
+/* Respeta la preferencia del sistema de reducir movimiento (WCAG 2.3.3).
+   Cubre animaciones propias, de Base UI, sonner y tw-animate-css. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
