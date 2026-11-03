@@ -42,15 +42,11 @@ export const mainNav: NavItem[] = [{ label: "Inicio", to: routes.home }]
 
 /** Galería de demos del kit de UI — no es parte de la IA del producto. */
 export const componentGalleryNav: NavItem[] = [
-    { label: "Grilla Filtro", to: routes.home },
-    { label: "Grilla agregar", to: routes.home },
     { label: "Cards metricas", to: routes.metricas },
     { label: "Toasts", to: routes.toasts },
     { label: "Empty states", to: routes.emptyStates },
     { label: "Grilla agregar", to: routes.grillaAgregar },
-    
     { label: "Toasts", to: routes.toasts },
-  
-    { label: "form", to: routes.form },
+    { label: "Form", to: routes.form },
     { label: "Modal confirmacion", to: routes.modalConfirmacion },
 ]
