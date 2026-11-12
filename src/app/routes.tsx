@@ -1,5 +1,6 @@
 import type { ReactElement } from "react"
 import { ModulePlaceholderPage } from "@/pages/ModulePlaceholderPage"
+import { ParametrosPage } from "@/pages/ParametrosPage"
 import { UiGalleryPage } from "@/pages/UiGalleryPage"
 import { isRouteEnabled, routeMeta, type RouteMeta } from "./route-meta"
 
@@ -8,6 +9,7 @@ export interface AppRoute extends RouteMeta {
 }
 
 const pageByPath: Record<string, ReactElement> = {
+  "/parametros": <ParametrosPage />,
   "/dev/ui": <UiGalleryPage />,
 }
 

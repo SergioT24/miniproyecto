@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom/vitest"
 import { cleanup } from "@testing-library/react"
 import { afterAll, afterEach, beforeAll, vi } from "vitest"
+import { resetParametrosStore } from "@/features/parametros/msw"
 import { server } from "./msw/server"
 
 beforeAll(() => {
@@ -17,6 +18,7 @@ beforeAll(() => {
 afterEach(() => {
   cleanup()
   server.resetHandlers()
+  resetParametrosStore()
 })
 
 afterAll(() => {

@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 import { CurrencyDisplay } from "@/components/app/CurrencyDisplay"
 import { ConfirmDialog } from "@/components/app/ConfirmDialog"
+import { DatePicker } from "@/components/app/DatePicker"
 import { EmptyState } from "@/components/app/EmptyState"
 import { ErrorState } from "@/components/app/ErrorState"
 import { FilterBar } from "@/components/app/FilterBar"
@@ -17,6 +18,7 @@ import { LoadingState } from "@/components/app/LoadingState"
 import { MaskedValue } from "@/components/app/MaskedValue"
 import { MetricCard } from "@/components/app/MetricCard"
 import { MoneyInput } from "@/components/app/MoneyInput"
+import { MonthPicker } from "@/components/app/MonthPicker"
 import { PageHeader } from "@/components/app/PageHeader"
 import { QueryState } from "@/components/app/QueryState"
 import { StatusBadge } from "@/components/app/StatusBadge"
@@ -333,6 +335,47 @@ function FormularioDemo() {
   )
 }
 
+function SelectoresFechaDemo() {
+  const [fecha, setFecha] = useState<Date | null>(new Date(2026, 2, 15))
+  const [mes, setMes] = useState<Date | null>(new Date(2026, 2, 1))
+
+  return (
+    <div className="grid max-w-2xl gap-4 rounded-xl border bg-card p-5 sm:grid-cols-2">
+      <FormField
+        id="demo-fecha"
+        label="Fecha"
+        description="Calendario de días con navegación por mes."
+      >
+        {(field) => (
+          <DatePicker
+            id={field.id}
+            value={fecha}
+            onChange={setFecha}
+            aria-describedby={field.describedBy}
+            aria-invalid={field.invalid}
+          />
+        )}
+      </FormField>
+
+      <FormField
+        id="demo-mes"
+        label="Mes"
+        description="Grilla de doce meses con navegación por año."
+      >
+        {(field) => (
+          <MonthPicker
+            id={field.id}
+            value={mes}
+            onChange={setMes}
+            aria-describedby={field.describedBy}
+            aria-invalid={field.invalid}
+          />
+        )}
+      </FormField>
+    </div>
+  )
+}
+
 function QueryStatesDemo() {
   return (
     <div className="grid gap-4 lg:grid-cols-2">
@@ -643,6 +686,13 @@ export function UiGalleryPage() {
         description="Campos accesibles, validación con React Hook Form + Zod, resumen de errores e input de dinero."
       >
         <FormularioDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Selectores de fecha"
+        description="Fecha puntual y mes con teclado, popover accesible y formato local."
+      >
+        <SelectoresFechaDemo />
       </GallerySection>
 
       <GallerySection

@@ -75,20 +75,25 @@ src/
 │   └── error-boundary.tsx # error de render y error de ruta
 ├── components/
 │   ├── ui/                # primitivas shadcn/Base UI (no renombrar)
-│   ├── app/               # patrones de App (se completa en la Fase 1)
+│   ├── app/               # patrones de App: tabla, formularios, estados y pickers
 │   ├── AppSidebar.tsx     # navegación lateral
 │   ├── Navbar.tsx         # barra superior con breadcrumb y tema
 │   └── ThemeToggle.tsx
-├── features/              # módulos de dominio (se agregan por fase)
+├── features/
+│   └── parametros/        # catálogos CRUD, API y handlers MSW
 ├── hooks/
+│   ├── use-filters.ts     # filtros sincronizados con la URL
 │   └── use-route-announcer.ts
 ├── layouts/
 │   └── AppLayout.tsx      # shell con sidebar, navbar y <Outlet />
 ├── lib/
+│   ├── api/               # cliente HTTP, errores y tipos paginados
+│   ├── format/            # importes, porcentajes y fechas
 │   └── utils.ts           # helper cn()
 ├── pages/
 │   ├── ModulePlaceholderPage.tsx
 │   ├── NotFoundPage.tsx
+│   ├── ParametrosPage.tsx
 │   └── UiGalleryPage.tsx
 ├── test/
 │   ├── a11y.ts            # helper de axe
@@ -116,13 +121,25 @@ Para agregar una página:
 La galería está en `/dev/ui` y solo se registra en desarrollo (`import.meta.env.DEV`). No aparece en
 el navbar de producto; en desarrollo se muestra como sección “Desarrollo” del sidebar.
 
+## Parámetros
+
+`/parametros` reúne los catálogos maestros en pestañas: proyectos, direcciones, financiadores,
+categorías, monedas y parámetros mensuales. La pestaña activa se conserva en la URL
+(`?catalogo=monedas`).
+
+Cada catálogo usa la tabla paginada del design system y un panel lateral para alta y edición. El
+mock valida duplicados, integridad referencial y devuelve errores 409 cuando una dirección o un
+financiador tiene proyectos asociados. Las mutaciones invalidan las consultas y muestran un aviso
+con Sonner.
+
 ## Mock service worker
 
 `src/test/msw` contiene los handlers y el worker. En desarrollo MSW arranca automáticamente si
 `VITE_ENABLE_MOCKS=true`; en tests el server de MSW se inicia en `src/test/setup.ts`.
 
 Los datos viven en memoria y se reinician al recargar. Todo endpoint o fixture sin contrato de
-backend queda marcado con `TODO(api)`.
+backend queda marcado con `TODO(api)`. Los catálogos se exponen como recursos REST paginados en
+`/api/parametros/:catalog`; los tests reinician el store entre casos con `resetParametrosStore`.
 
 ## Accesibilidad y tema
 

@@ -1,7 +1,11 @@
 import { http, HttpResponse } from "msw"
+import { parametrosHandlers } from "@/features/parametros/msw"
 
 /**
  * Handlers base del mock service.
- * Los handlers por feature se agregan en fases posteriores.
+ * Combina los handlers base con los de cada feature.
  */
-export const handlers = [http.get("/api/health", () => HttpResponse.json({ status: "ok" }))]
+export const handlers = [
+  http.get("/api/health", () => HttpResponse.json({ status: "ok" })),
+  ...parametrosHandlers,
+]
