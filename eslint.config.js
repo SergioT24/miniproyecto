@@ -1,15 +1,15 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from "@eslint/js"
+import globals from "globals"
+import jsxA11y from "eslint-plugin-jsx-a11y"
+import reactHooks from "eslint-plugin-react-hooks"
+import reactRefresh from "eslint-plugin-react-refresh"
+import tseslint from "typescript-eslint"
+import { defineConfig, globalIgnores } from "eslint/config"
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(["dist", "coverage", "public/mockServiceWorker.js"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
@@ -23,9 +23,16 @@ export default defineConfig([
   },
   {
     // Componentes generados por shadcn: exportan variantes/hooks junto al componente.
-    files: ['src/components/ui/**/*.{ts,tsx}', 'src/components/theme-provider.tsx'],
+    files: ["src/components/ui/**/*.{ts,tsx}", "src/components/theme-provider.tsx"],
     rules: {
-      'react-refresh/only-export-components': 'off',
+      "react-refresh/only-export-components": "off",
+    },
+  },
+  {
+    // Utilidades y setup de tests no son módulos de componentes.
+    files: ["src/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"],
+    rules: {
+      "react-refresh/only-export-components": "off",
     },
   },
 ])

@@ -1,86 +1,35 @@
-import { Input } from "@/components/ui/input"
+import { ChevronRight } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
-import { componentGalleryNav, mainNav } from "@/lib/nav"
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { ChevronDown, Search } from "lucide-react"
-import { Link, useLocation } from "react-router-dom"
-
-function NavLink({ label, to }: { label: string; to: string }) {
-    const { pathname } = useLocation()
-    const active = pathname === to
-
-    return (
-        <Link
-            to={to}
-            aria-current={active ? "page" : undefined}
-            className={
-                active
-                    ? "font-medium text-primary"
-                    : "font-medium text-foreground hover:text-primary"
-            }
-        >
-            {label}
-        </Link>
-    )
-}
+import { useCurrentRouteMeta } from "@/app/route-meta"
 
 export function Navbar() {
-    return (
-        <nav aria-label="Navegación superior" className="sticky top-0 z-20 w-full border-b bg-card">
-            <div className="mx-auto flex max-w-screen-xl items-center justify-between gap-3 p-4">
-                <div className="flex items-center gap-2">
-                    <SidebarTrigger />
-                    <ThemeToggle />
-                    <Link to="/" className="flex items-center gap-3">
-                        <span className="text-xl font-semibold">Tablero</span>
-                    </Link>
-                </div>
+  const meta = useCurrentRouteMeta()
 
-                {/* Buscador */}
-                <div
-                    role="search"
-                    aria-label="Búsqueda"
-                    className="relative max-w-xs flex-1"
-                >
-                    <Search className="absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        type="search"
-                        placeholder="Buscar..."
-                        aria-label="Buscar"
-                        className="w-full pl-8"
-                    />
-                </div>
+  return (
+    <header className="sticky top-0 z-20 w-full border-b bg-card">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 p-3 md:p-4">
+        <div className="flex min-w-0 items-center gap-2">
+          <SidebarTrigger />
+          <nav aria-label="Breadcrumb" className="min-w-0">
+            <ol className="flex min-w-0 items-center gap-1.5 text-sm">
+              <li className="hidden text-muted-foreground sm:block">
+                {meta?.section ?? "Finanzas"}
+              </li>
+              <li aria-hidden="true" className="hidden sm:block">
+                <ChevronRight className="size-4 text-muted-foreground" />
+              </li>
+              <li aria-current="page" className="truncate font-medium">
+                {meta?.label ?? "Página no encontrada"}
+              </li>
+            </ol>
+          </nav>
+        </div>
 
-                <div className="hidden items-center gap-8 md:flex">
-                    {mainNav.map((link) => (
-                        <NavLink key={link.to} {...link} />
-                    ))}
-
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className="flex items-center gap-1 font-medium hover:text-primary">
-                            Componentes
-                            <ChevronDown className="size-4" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            {componentGalleryNav.map((item) => (
-                                <DropdownMenuItem
-                                    key={item.label}
-                                    render={<Link to={item.to} />}
-                                    className="cursor-pointer"
-                                >
-                                    {item.label}
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            </div>
-        </nav>
-    )
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+        </div>
+      </div>
+    </header>
+  )
 }
