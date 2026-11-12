@@ -29,9 +29,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import DataTable from "@/components/DataTable"
 import { RecordsGrid } from "@/components/RecordsGrid"
 import { estadosPresupuesto } from "@/lib/presupuesto"
+import { DataTableDemo, DataTableEstadosDemo } from "@/pages/ui-gallery/DataTableDemo"
 
 const formatoPesos = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -618,10 +618,17 @@ export function UiGalleryPage() {
       </GallerySection>
 
       <GallerySection
-        title="Tabla de presupuestos"
-        description="Demo de tabla con filtros, orden y selector de columnas."
+        title="Tabla de datos"
+        description="Tabla genérica con búsqueda, orden, paginación, columnas visibles, selección y estados de consulta."
       >
-        <DataTable />
+        <DataTableDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Estados de la tabla"
+        description="La estructura de la tabla se mantiene mientras anuncia carga, error o ausencia de resultados."
+      >
+        <DataTableEstadosDemo />
       </GallerySection>
 
       <GallerySection
