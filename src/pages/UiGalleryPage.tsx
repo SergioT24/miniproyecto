@@ -1,13 +1,37 @@
 import { useState, type ReactNode } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { CheckCircle2, Clock3, TriangleAlert } from "lucide-react"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { z } from "zod"
+import { CurrencyDisplay } from "@/components/app/CurrencyDisplay"
 import { ConfirmDialog } from "@/components/app/ConfirmDialog"
 import { EmptyState } from "@/components/app/EmptyState"
+import { ErrorState } from "@/components/app/ErrorState"
+import { FilterBar } from "@/components/app/FilterBar"
+import { FormActions } from "@/components/app/FormActions"
+import { FormErrorSummary } from "@/components/app/FormErrorSummary"
+import { FormField } from "@/components/app/FormField"
+import { FormSection } from "@/components/app/FormSection"
+import { LoadingState } from "@/components/app/LoadingState"
+import { MaskedValue } from "@/components/app/MaskedValue"
 import { MetricCard } from "@/components/app/MetricCard"
+import { MoneyInput } from "@/components/app/MoneyInput"
+import { PageHeader } from "@/components/app/PageHeader"
+import { QueryState } from "@/components/app/QueryState"
+import { StatusBadge } from "@/components/app/StatusBadge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import DataTable from "@/components/DataTable"
-import { RecordForm } from "@/components/RecordForm"
 import { RecordsGrid } from "@/components/RecordsGrid"
-import { type PresupuestoValores } from "@/lib/presupuesto"
+import { estadosPresupuesto } from "@/lib/presupuesto"
 
 const formatoPesos = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -86,17 +110,325 @@ function ConfirmDialogDemo() {
   )
 }
 
-function RecordFormDemo() {
-  const [enviado, setEnviado] = useState<PresupuestoValores | null>(null)
+function FilterBarDemo() {
+  const [busqueda, setBusqueda] = useState("")
 
   return (
-    <div className="max-w-md space-y-4 rounded-xl border bg-card p-5">
-      <RecordForm submitLabel="Guardar registro" onSubmit={setEnviado} />
+    <div className="space-y-3">
+      <FilterBar
+        actions={
+          <Button
+            variant="outline"
+            onClick={() => setBusqueda("")}
+            disabled={busqueda.length === 0}
+          >
+            Limpiar filtros
+          </Button>
+        }
+      >
+        <FormField id="demo-filtro-busqueda" label="Buscar" className="w-full sm:w-72">
+          {({ id, describedBy }) => (
+            <Input
+              id={id}
+              aria-describedby={describedBy}
+              value={busqueda}
+              onChange={(event) => setBusqueda(event.target.value)}
+              placeholder="Detalle o proyecto"
+            />
+          )}
+        </FormField>
+      </FilterBar>
+
       <p className="text-sm text-muted-foreground" aria-live="polite">
-        {enviado
-          ? `Último envío: ${enviado.detalle} · $ ${enviado.monto} · ${enviado.estado}`
-          : "Todavía no enviaste nada."}
+        {busqueda ? `Filtrando por “${busqueda}”.` : "Sin búsqueda activa."}
       </p>
+    </div>
+  )
+}
+
+const formularioSchema = z.object({
+  detalle: z
+    .string()
+    .trim()
+    .min(1, "Ingresá un detalle.")
+    .max(120, "El detalle no puede superar los 120 caracteres."),
+  monto: z
+    .number()
+    .nullable()
+    .refine((value) => value !== null && value > 0, "Ingresá un monto mayor a 0."),
+  estado: z.string().min(1, "Elegí un estado."),
+})
+
+type FormularioValores = z.infer<typeof formularioSchema>
+
+const formularioId = "demo-presupuesto"
+
+const formularioEtiquetas: Record<keyof FormularioValores, string> = {
+  detalle: "Detalle",
+  monto: "Monto",
+  estado: "Estado",
+}
+
+function FormularioDemo() {
+  const form = useForm<FormularioValores>({
+    resolver: zodResolver(formularioSchema),
+    defaultValues: { detalle: "", monto: null, estado: "" },
+    mode: "onSubmit",
+  })
+  const [intento, setIntento] = useState(0)
+  const [ultimoEnvio, setUltimoEnvio] = useState<string | null>(null)
+
+  const errores = (Object.keys(formularioEtiquetas) as Array<keyof FormularioValores>).flatMap(
+    (campo) => {
+      const error = form.formState.errors[campo]
+
+      if (!error) {
+        return []
+      }
+
+      return [
+        {
+          fieldId: `${formularioId}-${campo}`,
+          label: formularioEtiquetas[campo],
+          message: typeof error.message === "string" ? error.message : "Revisá este campo.",
+        },
+      ]
+    },
+  )
+
+  function handleValid(values: FormularioValores) {
+    setUltimoEnvio(
+      `${values.detalle} · ${formatoPesos.format(values.monto ?? 0)} · ${values.estado}`,
+    )
+    setIntento(0)
+    form.reset()
+  }
+
+  const handleSubmit = form.handleSubmit(handleValid, () => setIntento((current) => current + 1))
+
+  return (
+    <form
+      noValidate
+      onSubmit={handleSubmit}
+      className="max-w-2xl space-y-6 rounded-xl border bg-card p-5"
+    >
+      {errores.length > 0 && <FormErrorSummary key={`intento-${intento}`} errors={errores} />}
+
+      <FormSection
+        title="Datos del registro"
+        description="Los campos marcados con * son obligatorios."
+      >
+        <Controller
+          control={form.control}
+          name="detalle"
+          render={({ field, fieldState }) => (
+            <FormField
+              id={`${formularioId}-detalle`}
+              label="Detalle"
+              description="Máximo 120 caracteres."
+              error={fieldState.error?.message}
+              required
+            >
+              {({ id, describedBy, invalid, required }) => (
+                <Input
+                  {...field}
+                  id={id}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid || undefined}
+                  required={required}
+                  placeholder="Ej.: Compra de insumos"
+                />
+              )}
+            </FormField>
+          )}
+        />
+
+        <Controller
+          control={form.control}
+          name="monto"
+          render={({ field, fieldState }) => (
+            <FormField
+              id={`${formularioId}-monto`}
+              label="Monto"
+              description="Se guarda como número, sin separadores de miles."
+              error={fieldState.error?.message}
+              required
+            >
+              {({ id, describedBy, invalid, required }) => (
+                <MoneyInput
+                  id={id}
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  onBlur={field.onBlur}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid || undefined}
+                  required={required}
+                  placeholder="0"
+                />
+              )}
+            </FormField>
+          )}
+        />
+
+        <Controller
+          control={form.control}
+          name="estado"
+          render={({ field, fieldState }) => (
+            <FormField
+              id={`${formularioId}-estado`}
+              label="Estado"
+              error={fieldState.error?.message}
+              required
+            >
+              {({ id, describedBy, invalid, required }) => (
+                <Select
+                  name={field.name}
+                  value={field.value || null}
+                  onValueChange={(value) => field.onChange(value ?? "")}
+                  required={required}
+                >
+                  <SelectTrigger
+                    id={id}
+                    aria-describedby={describedBy}
+                    aria-invalid={invalid || undefined}
+                    className="w-full"
+                    onBlur={field.onBlur}
+                  >
+                    <SelectValue placeholder="Seleccioná un estado" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {estadosPresupuesto.map((estado) => (
+                      <SelectItem key={estado} value={estado}>
+                        {estado}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </FormField>
+          )}
+        />
+      </FormSection>
+
+      <FormActions>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            form.reset()
+            setIntento(0)
+            setUltimoEnvio(null)
+          }}
+        >
+          Limpiar
+        </Button>
+        <Button type="submit">Guardar registro</Button>
+      </FormActions>
+
+      <p role="status" className="text-sm text-muted-foreground">
+        {ultimoEnvio ? `Último envío: ${ultimoEnvio}` : "Todavía no enviaste el formulario."}
+      </p>
+    </form>
+  )
+}
+
+function QueryStatesDemo() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      <div className="rounded-xl border bg-card p-4">
+        <h3 className="mb-2 text-sm font-medium">Cargando</h3>
+        <LoadingState />
+      </div>
+
+      <div className="rounded-xl border bg-card p-4">
+        <h3 className="mb-2 text-sm font-medium">Error recuperable</h3>
+        <ErrorState onRetry={() => toast.info("Reintento solicitado (demo).")} />
+      </div>
+
+      <div className="rounded-xl border bg-card p-4">
+        <h3 className="mb-2 text-sm font-medium">Consulta sin resultados</h3>
+        <QueryState
+          isEmpty
+          emptyState={
+            <EmptyState
+              illustration="movements"
+              title="No se encontraron movimientos"
+              description="Probá con otro período o ajustá los filtros."
+            />
+          }
+        >
+          <p>Contenido con datos.</p>
+        </QueryState>
+      </div>
+
+      <div className="rounded-xl border bg-card p-4">
+        <h3 className="mb-2 text-sm font-medium">Consulta con datos</h3>
+        <QueryState isLoading={false} isError={false} isEmpty={false}>
+          <p className="py-6 text-center text-sm text-muted-foreground">
+            3 movimientos listos para mostrar.
+          </p>
+        </QueryState>
+      </div>
+    </div>
+  )
+}
+
+function DatosDemo() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      <div className="space-y-4 rounded-xl border bg-card p-5">
+        <h3 className="text-sm font-medium">Importes y valores ocultos</h3>
+
+        <dl className="space-y-3 text-sm">
+          <div className="flex items-center justify-between gap-4">
+            <dt className="text-muted-foreground">Saldo total</dt>
+            <dd>
+              <CurrencyDisplay value={1234567.5} />
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="text-muted-foreground">Variación</dt>
+            <dd>
+              <CurrencyDisplay value={-24500} showSign />
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="text-muted-foreground">Sin dato</dt>
+            <dd>
+              <CurrencyDisplay value={null} />
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="text-muted-foreground">Saldo restringido</dt>
+            <dd>
+              <MaskedValue label="Saldo restringido">
+                <CurrencyDisplay value={98500} />
+              </MaskedValue>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="space-y-4 rounded-xl border bg-card p-5">
+        <h3 className="text-sm font-medium">Estados</h3>
+        <div className="flex flex-wrap gap-2">
+          <StatusBadge tone="success" icon={CheckCircle2}>
+            Aprobado
+          </StatusBadge>
+          <StatusBadge tone="warning" icon={Clock3}>
+            Pendiente
+          </StatusBadge>
+          <StatusBadge tone="danger" icon={TriangleAlert}>
+            Observado
+          </StatusBadge>
+          <StatusBadge tone="info">En revisión</StatusBadge>
+          <StatusBadge tone="neutral">Sin estado</StatusBadge>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          El texto siempre acompaña al color y al ícono.
+        </p>
+      </div>
     </div>
   )
 }
@@ -211,12 +543,22 @@ function MiniDonut() {
 export function UiGalleryPage() {
   return (
     <div className="space-y-10">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Galería UI</h1>
-        <p className="text-sm text-muted-foreground">
-          Catálogo de componentes y patrones existentes. Ruta disponible solo en desarrollo.
-        </p>
-      </header>
+      <PageHeader
+        title="Galería UI"
+        description="Catálogo de componentes y patrones de la app. Ruta disponible solo en desarrollo."
+        actions={
+          <Button variant="outline" onClick={() => toast.success("Acción de página (demo).")}>
+            Acción principal
+          </Button>
+        }
+      />
+
+      <GallerySection
+        title="Filtros"
+        description="Barra de filtros con landmark de búsqueda y acción para limpiar."
+      >
+        <FilterBarDemo />
+      </GallerySection>
 
       <GallerySection
         title="Métricas"
@@ -290,10 +632,24 @@ export function UiGalleryPage() {
       </GallerySection>
 
       <GallerySection
-        title="Formulario"
-        description="Formulario con validación para cargar un registro."
+        title="Formularios"
+        description="Campos accesibles, validación con React Hook Form + Zod, resumen de errores e input de dinero."
       >
-        <RecordFormDemo />
+        <FormularioDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Estados de consulta"
+        description="Carga, error recuperable, resultado vacío y contenido disponible."
+      >
+        <QueryStatesDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Importes y estados"
+        description="Formato consistente, ocultamiento de valores sensibles y estados que no dependen solo del color."
+      >
+        <DatosDemo />
       </GallerySection>
 
       <GallerySection

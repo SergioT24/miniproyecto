@@ -199,7 +199,7 @@ export function EmptyState({
       )}
 
       <h2 className="text-base font-medium text-muted-foreground">{title}</h2>
-      {description && <p className="max-w-sm text-sm text-muted-foreground/80">{description}</p>}
+      {description && <p className="max-w-sm text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-1">{action}</div>}
     </div>
   )

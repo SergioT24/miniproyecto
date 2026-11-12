@@ -40,9 +40,9 @@ const formatoMoneda = new Intl.NumberFormat("es-AR", {
 
 // 4. Estilos de estado usando los tokens del tema (funcionan en claro y oscuro)
 const estilosEstado: Record<string, string> = {
-  REALIZADO: "bg-success/10 text-success",
+  REALIZADO: "bg-success/5 text-success",
   "PRE PRESUPUESTO": "bg-muted text-muted-foreground",
-  AJUSTE: "bg-warning/10 text-warning",
+  AJUSTE: "bg-warning/5 text-warning",
 }
 
 // 5. Definición de columnas tipadas específicamente para Presupuesto
