@@ -142,6 +142,9 @@ export const categoriasSeed: CategoriaInput[] = [
   { nombre: "Capacitaciones", tipo: "proyecto" },
   { nombre: "Equipamiento", tipo: "proyecto" },
   { nombre: "Consultoría", tipo: "proyecto" },
+  { nombre: "Convenios y subsidios", tipo: "proyecto" },
+  { nombre: "Donaciones", tipo: "proyecto" },
+  { nombre: "Aportes internacionales", tipo: "proyecto" },
 ]
 
 export const monedasSeed: MonedaInput[] = [

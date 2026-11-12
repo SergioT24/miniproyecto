@@ -1,4 +1,4 @@
-import { format, isValid, parse, parseISO, startOfMonth } from "date-fns"
+import { eachMonthOfInterval, format, isValid, parse, parseISO, startOfMonth } from "date-fns"
 import { es } from "date-fns/locale"
 
 function capitalize(value: string) {
@@ -50,4 +50,19 @@ export function formatDateTime(value: string | Date | null | undefined): string 
 /** Primer día del mes, normalizado para parámetros mensuales. */
 export function monthStart(value: Date): Date {
   return startOfMonth(value)
+}
+
+/**
+ * Meses completos entre dos fechas ISO, normalizados al día 1.
+ * Se usa para construir la grilla del presupuesto y el cash flow.
+ */
+export function monthRange(start: string, end: string): string[] {
+  const startDate = parseDate(start)
+  const endDate = parseDate(end)
+
+  if (!startDate || !endDate || startDate > endDate) {
+    return []
+  }
+
+  return eachMonthOfInterval({ start: startDate, end: endDate }).map(toIsoDate)
 }
