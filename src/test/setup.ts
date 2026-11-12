@@ -1,7 +1,10 @@
 import "@testing-library/jest-dom/vitest"
 import { cleanup } from "@testing-library/react"
 import { afterAll, afterEach, beforeAll, vi } from "vitest"
+import { resetCashflowStore } from "@/features/cashflow/msw"
+import { resetMovimientosStore } from "@/features/movimientos/msw"
 import { resetParametrosStore } from "@/features/parametros/msw"
+import { resetPresupuestoStore } from "@/features/presupuesto/msw"
 import { server } from "./msw/server"
 
 beforeAll(() => {
@@ -19,6 +22,9 @@ afterEach(() => {
   cleanup()
   server.resetHandlers()
   resetParametrosStore()
+  resetPresupuestoStore()
+  resetMovimientosStore()
+  resetCashflowStore()
 })
 
 afterAll(() => {
