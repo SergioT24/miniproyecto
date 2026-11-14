@@ -1,6 +1,19 @@
 import { useState, type ReactNode } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CheckCircle2, Clock3, TriangleAlert } from "lucide-react"
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock3,
+  Info,
+  KeyRound,
+  Lock,
+  LogIn,
+  LogOut,
+  Settings,
+  Shield,
+  TriangleAlert,
+  User,
+} from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -22,7 +35,28 @@ import { MonthPicker } from "@/components/app/MonthPicker"
 import { PageHeader } from "@/components/app/PageHeader"
 import { QueryState } from "@/components/app/QueryState"
 import { StatusBadge } from "@/components/app/StatusBadge"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -31,9 +65,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
 import { RecordsGrid } from "@/components/RecordsGrid"
 import { estadosPresupuesto } from "@/lib/presupuesto"
 import { DataTableDemo, DataTableEstadosDemo } from "@/pages/ui-gallery/DataTableDemo"
+import {
+  AlertDialogDemo,
+  ChartCardDemo,
+  FilterAndFieldComponentsDemo,
+  NavigationComponentsDemo,
+} from "@/pages/ui-gallery/ReusableComponentsDemo"
 
 const formatoPesos = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -583,6 +625,361 @@ function MiniDonut() {
   )
 }
 
+function BotonesDemo() {
+  return (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground">Variantes principales</h3>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="default">Default / Primario</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="destructive">Destructive</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="link">Link</Button>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground">Tamaños y estados con iconos</h3>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button size="sm">
+            <LogIn className="mr-1.5 size-3.5" /> Pequeño (sm)
+          </Button>
+          <Button size="default">
+            <KeyRound className="mr-2 size-4" /> Normal
+          </Button>
+          <Button size="lg">
+            <Shield className="mr-2 size-5" /> Grande (lg)
+          </Button>
+          <Button disabled>
+            <Lock className="mr-2 size-4" /> Deshabilitado
+          </Button>
+          <Button disabled>
+            <Spinner className="mr-2 size-4" /> Procesando…
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AlertasDemo() {
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <Alert>
+        <Info className="size-4" />
+        <AlertTitle>Sesión activa</AlertTitle>
+        <AlertDescription>
+          Tu sesión se renovó automáticamente. Los cambios pendientes fueron sincronizados.
+        </AlertDescription>
+      </Alert>
+
+      <Alert variant="destructive">
+        <AlertCircle className="size-4" />
+        <AlertTitle>Credenciales incorrectas</AlertTitle>
+        <AlertDescription>
+          El correo o la contraseña no coinciden con nuestros registros. Verificá los datos.
+        </AlertDescription>
+      </Alert>
+    </div>
+  )
+}
+
+function BadgesRolesDemo() {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground">
+          Roles del sistema (Fundación Huésped)
+        </h3>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="default" className="gap-1">
+            <Shield className="size-3" /> Administrador
+          </Badge>
+          <Badge variant="secondary">Editor</Badge>
+          <Badge variant="outline" className="border-sky-500/30 text-sky-600 dark:text-sky-400">
+            Aprobador
+          </Badge>
+          <Badge
+            variant="outline"
+            className="border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+          >
+            Tesorería
+          </Badge>
+          <Badge variant="outline" className="text-muted-foreground">
+            Consulta
+          </Badge>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium text-muted-foreground">Variantes estándar de Badge</h3>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="default">Default</Badge>
+          <Badge variant="secondary">Secondary</Badge>
+          <Badge variant="destructive">Destructive</Badge>
+          <Badge variant="outline">Outline</Badge>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function UserMenuDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-card p-6">
+      <div className="space-y-1">
+        <p className="text-sm font-medium">Mockup de UserMenu (Navbar superior)</p>
+        <p className="text-xs text-muted-foreground">
+          Menú desplegable accesible con Base UI para colocar en la barra superior.
+        </p>
+      </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button variant="outline" className="flex items-center gap-2 rounded-full pl-2 pr-3">
+              <div className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                VA
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-xs font-medium leading-none">Vanesa Acosta</span>
+                <span className="text-[10px] text-muted-foreground leading-none">Administrador</span>
+              </div>
+            </Button>
+          }
+        />
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1 p-1">
+                <p className="text-xs font-semibold leading-none">Vanesa Acosta</p>
+                <p className="text-[11px] text-muted-foreground leading-none">
+                  vanesa.acosta@huesped.org.ar
+                </p>
+              </div>
+            </DropdownMenuLabel>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => toast.info("Navegando a Mi perfil (demo)")}>
+            <User className="mr-2 size-4" />
+            <span>Mi perfil</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => toast.info("Abriendo Cambio de contraseña (demo)")}>
+            <KeyRound className="mr-2 size-4" />
+            <span>Cambiar contraseña</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => toast.info("Abriendo Preferencias (demo)")}>
+            <Settings className="mr-2 size-4" />
+            <span>Preferencias</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+            onClick={() => toast.success("Sesión cerrada (demo)")}
+          >
+            <LogOut className="mr-2 size-4" />
+            <span>Cerrar sesión</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
+}
+
+function DialogCambiarPasswordDemo() {
+  const [open, setOpen] = useState(false)
+  const [actual, setActual] = useState("")
+  const [nueva, setNueva] = useState("")
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    toast.success("Contraseña actualizada con éxito (demo).")
+    setOpen(false)
+    setActual("")
+    setNueva("")
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger
+          render={
+            <Button variant="outline">
+              <KeyRound className="mr-2 size-4" /> Cambiar contraseña (Modal)
+            </Button>
+          }
+        />
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Cambiar contraseña</DialogTitle>
+            <DialogDescription>
+              Ingresá tu contraseña actual y la nueva clave. Debe contener al menos 8 caracteres.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-4 py-2">
+            <FormField id="pwd-actual" label="Contraseña actual" required>
+              {(field) => (
+                <Input
+                  id={field.id}
+                  type="password"
+                  value={actual}
+                  onChange={(e) => setActual(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              )}
+            </FormField>
+
+            <FormField id="pwd-nueva" label="Nueva contraseña" required>
+              {(field) => (
+                <Input
+                  id={field.id}
+                  type="password"
+                  value={nueva}
+                  onChange={(e) => setNueva(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              )}
+            </FormField>
+
+            <DialogFooter className="pt-2">
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+              <Button type="submit">Actualizar clave</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}
+
+function CargaSkeletonsDemo() {
+  return (
+    <div className="grid gap-6 md:grid-cols-2">
+      <div className="space-y-3 rounded-xl border bg-card p-5">
+        <h3 className="text-sm font-medium">Spinners de actividad</h3>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <Spinner className="size-4 text-primary" />
+            <span className="text-xs text-muted-foreground">size-4</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Spinner className="size-6 text-primary" />
+            <span className="text-xs text-muted-foreground">size-6</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Spinner className="size-8 text-primary" />
+            <span className="text-xs text-muted-foreground">size-8</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 rounded-xl border bg-card p-5">
+        <h3 className="text-sm font-medium">Esqueletos de perfil y sesión</h3>
+        <div className="flex items-center gap-3">
+          <Skeleton className="size-10 rounded-full" />
+          <div className="flex-1 space-y-1.5">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-48" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LoginCardDemo() {
+  const [simularError, setSimularError] = useState(false)
+  const [email, setEmail] = useState("admin@huesped.org.ar")
+  const [password, setPassword] = useState("••••••••")
+  const [loading, setLoading] = useState(false)
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      if (simularError) {
+        toast.error("Error al iniciar sesión: credenciales no válidas.")
+      } else {
+        toast.success("¡Bienvenido/a al Sistema de Finanzas!")
+      }
+    }, 700)
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center rounded-xl border bg-muted/20 p-6">
+      <div className="mb-4 flex items-center gap-2">
+        <Button
+          size="sm"
+          variant={simularError ? "destructive" : "outline"}
+          onClick={() => setSimularError(!simularError)}
+        >
+          {simularError ? "Desactivar error simulado" : "Simular error de login"}
+        </Button>
+      </div>
+
+      <Card className="w-full max-w-sm bg-card shadow-sm">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-2 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+            <Shield className="size-5" />
+          </div>
+          <CardTitle className="text-lg">Fundación Huésped</CardTitle>
+          <CardDescription>Ingreso al Sistema de Finanzas</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-4">
+            {simularError && (
+              <Alert variant="destructive">
+                <AlertCircle className="size-4" />
+                <AlertTitle>Error de acceso</AlertTitle>
+                <AlertDescription className="text-xs">
+                  Correo o contraseña incorrectos. Intento 1 de 5.
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <FormField id="demo-login-email" label="Correo electrónico" required>
+              {(field) => (
+                <Input
+                  id={field.id}
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="usuario@huesped.org.ar"
+                  required
+                />
+              )}
+            </FormField>
+
+            <FormField id="demo-login-pass" label="Contraseña" required>
+              {(field) => (
+                <Input
+                  id={field.id}
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+              )}
+            </FormField>
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Spinner className="mr-2" />}
+              {loading ? "Verificando…" : "Iniciar sesión"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export function UiGalleryPage() {
   return (
     <div className="space-y-10">
@@ -595,6 +992,77 @@ export function UiGalleryPage() {
           </Button>
         }
       />
+
+      {/* SECCIÓN ESPECIAL: COMPONENTES DE AUTENTICACIÓN, ROLES Y ACCIONES */}
+      <GallerySection
+        title="Botones y acciones"
+        description="Variantes principales, secundarios, destructivos, tamaños y estados interactivos."
+      >
+        <BotonesDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Alertas y mensajes de seguridad"
+        description="Avisos contextuales informativos y de error para validaciones de login o credenciales."
+      >
+        <AlertasDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Badges y roles de usuario"
+        description="Etiquetas visuales para identificar roles de la Fundación y estados en el sistema."
+      >
+        <BadgesRolesDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Menú de usuario (UserMenu)"
+        description="Mockup del menú de usuario para la barra superior (Navbar), con dropdown accesible y logout."
+      >
+        <UserMenuDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Diálogo modal de contraseña"
+        description="Modal interactivo estándar con formulario para cambio de credenciales o edición de perfil."
+      >
+        <DialogCambiarPasswordDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Carga y esqueletos de autenticación"
+        description="Spinners y esqueletos animados para estados de verificación de sesión sin parpadeo."
+      >
+        <CargaSkeletonsDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Maqueta de inicio de sesión (Login Card)"
+        description="Ejemplo interactivo de tarjeta de ingreso montada con Card, FormField, Button y Alert."
+      >
+        <LoginCardDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Navegación y ayuda"
+        description="Breadcrumb, pestañas y tooltip para orientar la navegación y dar contexto."
+      >
+        <NavigationComponentsDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Filtros y campos base"
+        description="Selector etiquetado, agrupación semántica, checkbox y área de texto."
+      >
+        <FilterAndFieldComponentsDemo />
+      </GallerySection>
+
+      <GallerySection
+        title="Tarjeta de gráfico"
+        description="Contenedor reutilizable para gráficos con título, descripción y contenido accesible."
+      >
+        <ChartCardDemo />
+      </GallerySection>
 
       <GallerySection
         title="Filtros"
@@ -744,10 +1212,11 @@ export function UiGalleryPage() {
 
       <GallerySection
         title="Diálogos y avisos"
-        description="Confirmación de acciones destructivas y notificaciones breves."
+        description="Confirmación, alert dialog y notificaciones breves."
       >
         <div className="space-y-6">
           <ConfirmDialogDemo />
+          <AlertDialogDemo />
           <ToastsDemo />
         </div>
       </GallerySection>
